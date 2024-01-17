@@ -1,0 +1,41 @@
+# Team DEAD! BR.btc, Morius, Dukeck, Radical, HutsNabil, LeonExotic
+
+def concatenate_data(data1, data2):
+    """
+    Function to create a Bitcoin script that concatenates two pieces of data using OP_CAT.
+    :param data1: First data string to concatenate
+    :param data2: Second data string to concatenate
+    :return: Bitcoin script as a string
+    """
+    # The script is defined as a multi-line string.
+    # The placeholders <data1> and <data2> will be replaced with actual values passed to the function.
+    script = f"""
+    # Push the first data item onto the stack
+    <{data1}>
+    # Push the second data item onto the stack
+    <{data2}>
+    # Concatenate the two data items at the top of the stack
+    OP_CAT
+    # Remove the concatenated result from the stack to clean up
+    OP_DROP
+    # Typical Bitcoin transaction validation script follows:
+    # Duplicate the top stack item
+    OP_DUP
+    # Hash the duplicated item (usually a public key)
+    OP_HASH160
+    # Push the hashed public key (PubKeyHash) to the stack
+    <pubKeyHash>
+    # Check if the hashed public key matches the one in the transaction
+    OP_EQUALVERIFY
+    # Check if the transaction signature is valid
+    OP_CHECKSIG
+    """
+    return script
+
+# Example usage of the function with sample data
+data1 = "Hello"
+data2 = "World"
+# Call the function with the data items and store the result in 'resulting_script'
+resulting_script = concatenate_data(data1, data2)
+# Print the resulting Bitcoin script
+print(resulting_script)

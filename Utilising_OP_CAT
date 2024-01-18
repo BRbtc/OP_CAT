@@ -1,3 +1,17 @@
+## OP_CAT
+
+    Opcode (decimal): 126
+    Opcode (hex): 0x7e
+
+`OP_CAT` takes two byte arrays from the stack, concatenates them and pushes the result back to the stack.
+
+    x1 x2 OP_CAT → out
+
+Example:
+
+* `0x69 0x420 OP_CAT → 0x69420`
+
+
 # Team DEAD! BR.btc, Morius, Dukeck, Radical, HutsNabil, LeonExotic, Dankorrrr
 
 def concatenate_data(data1, data2):

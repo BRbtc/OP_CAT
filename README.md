@@ -1,8 +1,7 @@
 # OP_CAT
 Script possibly utilising OP_CAT -> "[Utilising_OP_CAT](https://github.com/BRbtc/OP_CAT/blob/main/Utilising_OP_CAT)"
 
-## OP_CAT Basics
-Bitcoin script basics
+## Bitcoin script basics
 https://www.youtube.com/watch?v=6Fa04MnURhw
 
 ## OP_CAT Basics

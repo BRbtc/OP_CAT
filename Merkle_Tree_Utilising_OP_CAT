@@ -16,9 +16,11 @@
 
 
 
-
-
 # Stack: [sig] [pubKey] [Merkle Path elements...] [R - Expected Merkle Root]
+## [sig: signature of the transaction]
+## [pubKey: public key corresponding to the signature]
+## [Merkle Path elements: hashes and left/right indicators for tree traversal]
+## [R: Expected Merkle Root hash of the tree]
 
 # First, hash the public key to match the format in the tree
 OP_DUP OP_HASH256

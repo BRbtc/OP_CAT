@@ -1,0 +1,111 @@
+# Merkle_Tree_Utilising_OP_CAT
+
+
+#                             R
+#                         /      \
+#                    /               \
+#               /                         \
+#              Z1                          Z2
+#         /            \                  /   \
+#       Y1              Y2              Y3     1
+#      /  \            /  \            /  \
+#   X1      X2      X3      X4      X5      X6
+#  / \     / \     / \     / \     / \     / \
+# K1 K2   K3 K4   K5 K6   K7 K8   K9 K10 K11  1
+
+
+
+
+
+
+# Stack: [sig] [pubKey] [Merkle Path elements...] [R - Expected Merkle Root]
+
+# First, hash the public key to match the format in the tree
+OP_DUP OP_HASH256
+
+# Level 1
+# Perform the operations for the first level
+8 OP_PICK   # Pick the leaf node hash (e.g., K10)
+OP_SWAP     # Swap to get the flag (0 or 1 for left or right) on top
+OP_IF       # If the node is a left node
+    # Current hash is left, concatenate with right (sibling) hash
+    OP_SWAP OP_CAT
+OP_ELSE     # If the node is a right node
+    # Current hash is right, concatenate with left (sibling) hash
+    OP_CAT
+OP_ENDIF
+OP_SHA256   # Hash the concatenated result
+
+
+
+
+# Level 2
+# Assuming the current hash (from Level 1) is at the top of the stack
+# and the stack also contains the remaining parts of the Merkle path and the expected Merkle root
+
+7 OP_PICK    # Pick the node hash at this level (e.g., X5 or X6)
+OP_SWAP      # Swap to get the left/right flag (0 or 1) on top of the stack
+
+# Determine concatenation order based on left/right flag
+OP_IF       # If the flag indicates a left node
+    OP_SWAP # Swap to put the current hash on top
+    OP_CAT  # Concatenate current hash (left) with picked hash (right)
+OP_ELSE     # If the flag indicates a right node
+    OP_CAT  # Concatenate picked hash (left) with current hash (right)
+OP_ENDIF
+
+OP_SHA256    # Hash the concatenated result
+
+# The result of this operation is the parent hash at this level of the Merkle tree
+
+
+# Level 3
+# Assuming the current hash (from Level 2) is at the top of the stack
+# and the stack also contains the remaining parts of the Merkle path and the expected Merkle root
+
+6 OP_PICK    # Pick the node hash at this level (e.g., Y3)
+OP_SWAP      # Swap to get the left/right flag (0 or 1) on top of the stack
+
+# Determine concatenation order based on left/right flag
+OP_IF       # If the flag indicates a left node
+    OP_SWAP # Swap to put the current hash on top
+    OP_CAT  # Concatenate current hash (left) with picked hash (right)
+OP_ELSE     # If the flag indicates a right node
+    OP_CAT  # Concatenate picked hash (left) with current hash (right)
+OP_ENDIF
+
+OP_SHA256    # Hash the concatenated result
+
+# The result of this operation is the parent hash at this level of the Merkle tree
+
+
+# Level 4
+# Assuming the current hash (from Level 3) is at the top of the stack
+# and the stack also contains the remaining parts of the Merkle path and the expected Merkle root
+
+5 OP_PICK    # Pick the node hash at this level (e.g., Z2)
+OP_SWAP      # Swap to get the left/right flag (0 or 1) on top of the stack
+
+# Determine concatenation order based on left/right flag
+OP_IF       # If the flag indicates a left node
+    OP_SWAP # Swap to put the current hash on top
+    OP_CAT  # Concatenate current hash (left) with picked hash (right)
+OP_ELSE     # If the flag indicates a right node
+    OP_CAT  # Concatenate picked hash (left) with current hash (right)
+OP_ENDIF
+
+OP_SHA256    # Hash the concatenated result
+
+# The result of this operation is the computed Merkle root
+
+
+# Verify that the computed Merkle root matches the expected root 'R'
+<R> OP_EQUALVERIFY
+
+# Verify the signature
+OP_CHECKSIG
+
+
+
+# Logic adapted from https://blog.blockstream.com/en-treesignatures/ 
+# Merkle tree from https://blog.blockstream.com/en-treesignatures/ 

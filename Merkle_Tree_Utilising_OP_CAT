@@ -14,6 +14,13 @@
 # K1 K2   K3 K4   K5 K6   K7 K8   K9 K10 K11  1
 
 
+# In this Merkle tree, each parent node is the hash of the concatenation of its two children nodes hashes. This is possible due to OP_CAT.  
+# i.e. 
+# K1 (420) + K2 (69)-> X1 (42069)
+# K3 (1337) + K4 (8008) -> X2 (13378008)
+# etc
+
+
 
 
 # Stack: [sig] [pubKey] [Merkle Path elements...] [R - Expected Merkle Root]

@@ -1,0 +1,40 @@
+By poseidon7095
+
+# OTC NFT Trade Script
+
+# Stack: [Alice's Signature] [Alice's Public Key] [Bob's Signature] [Bob's Public Key] [Alice's NFT ID] [Bob's NFT ID] [Expected Merkle Root]
+
+# Assuming the Merkle tree verification logic you provided is already executed and the Merkle root is computed.
+
+# Verify that the computed Merkle root matches the expected root
+<R> OP_EQUALVERIFY
+
+# Verify Alice's Signature
+OP_DUP OP_HASH256  # Prepare Alice's public key for verification
+3 OP_PICK         # Pick Alice's signature
+2 OP_PICK         # Pick Alice's public key
+OP_CHECKSIGVERIFY # Verify Alice's signature
+
+# Verify Bob's Signature
+OP_DUP OP_HASH256  # Prepare Bob's public key for verification
+5 OP_PICK         # Pick Bob's signature
+4 OP_PICK         # Pick Bob's public key
+OP_CHECKSIGVERIFY # Verify Bob's signature
+
+# Check if Alice's NFT ID is valid
+OP_DUP OP_HASH256          # Hash Alice's NFT ID
+7 OP_PICK                 # Pick Alice's NFT ID
+OP_EQUALVERIFY            # Compare with hashed NFT ID
+OP_DROP                   # Drop hashed NFT ID if equal
+
+# Check if Bob's NFT ID is valid
+OP_DUP OP_HASH256          # Hash Bob's NFT ID
+6 OP_PICK                 # Pick Bob's NFT ID
+OP_EQUALVERIFY            # Compare with hashed NFT ID
+OP_DROP                   # Drop hashed NFT ID if equal
+
+# At this point, the script has verified signatures and NFT IDs.
+# The parties can add additional logic for transferring cryptocurrency or exchanging NFTs.
+
+# Example: Transfer cryptocurrency from Alice to Bob
+# [Amount] [Alice's Public Key] [Bob's Public Key] 2 CHECKMULTISIG

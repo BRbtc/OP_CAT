@@ -7,9 +7,8 @@ OTC_Trading utilising OP_CAT -> "[OTC_Trading_Inscriptions_Using_OP_CAT](https:/
 
 OP_CAT Demos + QuantumCats Lore :D -> "[Python_Demos_OP_CAT](https://github.com/BRbtc/OP_CAT/tree/main/OP_CAT_Demos_Bonus)" 
 
+by # Team DEAD! BR.btc, Morius, Dukeck, Radical, HutsNabil, LeonExotic, Dankorrrr, Poseidon7095
+
+
 ## Bitcoin script basics
 https://www.youtube.com/watch?v=6Fa04MnURhw
-
-
-
-by # Team DEAD! BR.btc, Morius, Dukeck, Radical, HutsNabil, LeonExotic, Dankorrrr, Poseidon7095

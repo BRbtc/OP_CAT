@@ -10,3 +10,6 @@ OP_CAT Demos + QuantumCats Lore :D -> "[Python_Demos_OP_CAT](https://github.com/
 ## Bitcoin script basics
 https://www.youtube.com/watch?v=6Fa04MnURhw
 
+
+
+by # Team DEAD! BR.btc, Morius, Dukeck, Radical, HutsNabil, LeonExotic, Dankorrrr, Poseidon7095

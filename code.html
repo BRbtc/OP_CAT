@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Byte Operation Simulator</title>
+    <style>
+        /* css here */
+        /* Animation for byte display updates */
+        .byteAnimation {
+            animation: byteUpdate 0.5s ease;
+        }
+
+        @keyframes byteUpdate {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Button animations */
+        .buttonHover {
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .buttonHover:hover {
+            background-color: #f0f0f0; /* Adjust as per your color scheme */
+            transform: translateY(-2px);
+        }
+
+
+        body {
+            background-color: black;
+            color: #FF4501; /* Changing text color to white for readability */
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+        } 
+
+        .section {
+            border: 1px solid #FF4501;
+            padding: 20px;
+            text-align: center;
+        }
+
+
+
+
+
+        .byteDisplay {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .byteCount {
+            font-size: 0.7em; /* Adjust the font size as needed */
+ 
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            margin-right: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 40px; /* Adjust the value as needed for desired spacing */
+            background-color: #FF4501; /* Button background color */
+            color: black; /* Button text color */
+            border: 2px solid #FF4501; /* Button border color */
+            border-radius: 5px; /* Optional: Rounds the corners of the button */
+            transition: background-color 0.3s; /* Optional: Smooth transition for hover effect */
+        }
+
+        .sectionTitle {
+            font-size: 1.2em; /* Adjust the size as needed */
+            color: #FF4501; /* Color of the title */
+            margin-bottom: 20px; /* Space below the title */
+            text-align: center; /* Center-align the text */
+            font-weight: bold; /* Make the title bold */
+        }
+
+
+        button:hover {
+            background-color: #FF5501; /* Slightly different color on hover */
+            color: white; /* Change text color on hover */
+        }
+
+        .topStackTitle {
+            font-weight: bold;
+            display: block; /* Makes it a block-level element to occupy its own line */
+        }
+
+        .historyLog {
+            height: 250px; /* Sets a fixed height for the history log */
+            overflow-y: auto; /* Enables vertical scrolling */
+            overflow: hidden; /* Hides the scrollbar and disables scrolling */
+
+            border: 1px solid #FF4501; /* Adds a border to define the area visually */
+            padding: 5px 5px 5px 5px; /* Padding inside the box, no padding on the left */
+            background-color: #000000; /* Background color for the log area */
+
+        }
+
+
+
+        .historyLogEntry {
+            font-size: 0.7em; /* Smaller text size for the history log entries */
+            margin-top: 2px; /* Reduced space above the log entry */
+            margin-bottom: 2px; /* Reduced space below the log entry */
+            line-height: 1.2; /* Adjust line height to reduce vertical space */
+            text-align: center; /* Centers the text of each log entry */
+
+        }
+
+        .historyLogTitle {
+            font-weight: bold;
+            text-align: center; /* Centers the "History Log:" title */
+            margin-bottom: 10px
+
+        }
+
+        .boldText {
+            font-weight: bold;
+        }
+
+        .flash {
+            animation: flashAnimation 0.3s;
+        }
+
+        @keyframes flashAnimation {
+            from { background-color: #FF4501; }
+            to { background-color: #ffffff; }
+        }
+
+        .error-message {
+            font-size: 0.7em;
+            color: red;
+            margin-top: 10px;
+            min-height: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section" id="infiniteSection">
+            <div class="sectionTitle">Infinite Stack Element Size</div>
+            <button onclick="duplicate('infinite')" title="Doubles the number of bytes">OP_DUP</button>
+            <button onclick="concatenate('infinite')" title="Concatenates the two bytes, doubling the bytes on each line">OP_CAT</button>
+            <button onclick="reset('infinite')">Reset</button>
+            <div class="byteDisplay" id="infiniteBytes">
+                <div class="topStackTitle">Top of stack:</div>
+                1 byte
+            </div>
+            <div id="infiniteError" class="error-message"></div>
+            <div class="history" id="infiniteHistory"></div>
+            <div class="byteVisual" id="infiniteVisual"></div>
+            <div class="historyLog" id="infiniteHistoryLog">
+                <div class="historyLogTitle">History Log:</div>
+                <div id="infiniteHistoryEntries"></div>
+            </div>
+        </div>
+        <div class="section" id="limitedSection">
+            <div class="sectionTitle">2024 Stack Element Size</div>
+            <button onclick="duplicate('limited')" title="Doubles the number of bytes">OP_DUP</button>
+            <button onclick="concatenate('limited')" title="Halves the number of lines, doubling the bytes on each line">OP_CAT</button>
+            <button onclick="reset('limited')">Reset</button>
+            <div class="byteDisplay" id="limitedBytes">
+                <div class="topStackTitle">Top of stack:</div>
+                1 byte
+            </div>
+            <div id="limitedError" class="error-message"></div>
+            <div class="history" id="limitedHistory"></div>
+            <div class="byteVisual" id="limitedVisual"></div>
+            <div class="historyLog" id="limitedHistoryLog">
+                <div class="historyLogTitle">History Log:</div>
+                <div id="limitedHistoryEntries"></div> 
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* script here */
+        
+        let infiniteBytes = 1;
+        let limitedBytes = 1;
+        let isDuplicated = { infinite: false, limited: false };
+        let opDupCount = { infinite: 0, limited: 0 };
+        let opCatCount = { infinite: 0, limited: 0 };
+
+
+
+        function updateDisplay(section) {
+            let bytes = section === 'infinite' ? infiniteBytes : limitedBytes;
+            let byteDisplayElement = document.getElementById(section + 'Bytes');
+            byteDisplayElement.innerHTML = `<div class="topStackTitle">Top of stack:</div>${bytes} byte${bytes === 1 ? '' : 's'}`;
+
+            // Apply animation
+            const byteDisplay = document.getElementById(section + "Bytes");
+            byteDisplay.classList.add("byteAnimation");
+
+            // Remove the animation class to reset the animation
+            byteDisplay.addEventListener('animationend', () => {
+                byteDisplay.classList.remove("byteAnimation");
+            });
+
+        }
+
+        function displayOperation(section, operation) {
+            let bytes = section === 'infinite' ? infiniteBytes : limitedBytes;
+            let historyEntries = document.getElementById(section + 'HistoryEntries');
+            let newEntry = '';
+
+            if (operation === 'DUP' && !isDuplicated[section]) {
+                opDupCount[section]++;
+                document.getElementById(section + 'Bytes').innerHTML = `<div class="topStackTitle">Top of stack:</div>${bytes} bytes <span class="plusSign"> + </span><span class="duplicatedBytes">${bytes} bytes</span>`;
+                isDuplicated[section] = true;
+                newEntry = `<p class="historyLogEntry">(${opDupCount[section]}) OP_DUP</p>`;
+            } else if (operation === 'CAT' && isDuplicated[section]) {
+                opCatCount[section]++;
+                bytes *= 2;
+                if (section === 'limited' && bytes > 520) {
+                    displayError(section, 'Exceeds 520 byte limit');
+                    return;
+                }
+                document.getElementById(section + 'Bytes').innerHTML = `<div class="topStackTitle">Top of stack:</div>${bytes} bytes`;
+                newEntry = `<p class="historyLogEntry">(${opCatCount[section]}) OP_CAT</p>`;
+                if (section === 'infinite') {
+                    infiniteBytes = bytes;
+                } else {
+                    limitedBytes = bytes;
+                }
+                isDuplicated[section] = false;
+            }
+
+            historyEntries.innerHTML = newEntry + historyEntries.innerHTML;
+        }
+
+        function duplicate(section) {
+            displayOperation(section, 'DUP');
+        }
+
+        function concatenate(section) {
+            displayOperation(section, 'CAT');
+        }
+
+        function reset(section) {
+            opDupCount[section] = 0;
+            opCatCount[section] = 0;
+            isDuplicated[section] = false;
+            
+            if (section === 'infinite') {
+                infiniteBytes = 1;
+            } else {
+                limitedBytes = 1;
+            }
+
+            // Update the display for the section
+            updateDisplay(section);
+
+            // Reset the history log without altering its structure
+            const historyEntriesElement = document.getElementById(section + 'HistoryEntries');
+            if (historyEntriesElement) {
+                historyEntriesElement.innerHTML = ''; // Clear the content, but keep the element
+            } else {
+                console.error('Element not found:', section + 'HistoryEntries');
+            }
+
+            // Reset the byte visual element
+            const visualElement = document.getElementById(section + 'Visual');
+            if (visualElement) {
+                visualElement.style.width = '1%';
+            }
+
+        }
+
+
+
+
+        function displayError(section, message) {
+            let errorElement = document.getElementById(section + 'Error');
+            errorElement.textContent = message;
+            setTimeout(() => errorElement.textContent = '', 3000);
+        }
+
+        const element = document.getElementById(section + 'History');
+        if (element) {
+            element.innerHTML = '';
+        } else {
+            console.error('Element not found:', section + 'History');
+        }
+
+
+        // Initial display update
+        updateDisplay('infinite');
+        updateDisplay('limited');
+    </script>
+</body>
+</html>

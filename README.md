@@ -9,7 +9,8 @@ OP_CAT Demos + QuantumCats Lore :D -> "[Python_Demos_OP_CAT](https://github.com/
 
 OP_CAT & OP_DUP demo website: "[Website_Demo_OP_CAT](https://github.com/BRbtc/OP_CAT/blob/main/Website.html)" 
 
-![image](https://github.com/BRbtc/OP_CAT/assets/96064529/1aaf481b-9575-4997-9721-392f7973851d)
+![image](https://github.com/BRbtc/OP_CAT/assets/96064529/590105c3-c06d-4d1f-8ca6-d84d17a77882)
+
 
 
 by # Team DEAD! BR.btc, Morius, Dukeck, Radical, HutsNabil, LeonExotic, Dankorrrr, Poseidon7095
